@@ -1,5 +1,17 @@
-import React, { useMemo, useState } from "react";
-
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Календарь занятости Zoom</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
 const ADMIN_PASSWORD = "zoom2026";
 
 function startOfCurrentWeekMonday(date = new Date()) {
@@ -165,39 +177,39 @@ function hasFixedOverlap(fixedEvents, dayIndex, start, end) {
   });
 }
 
-export default function ZoomBusyCalendar() {
-  const [people, setPeople] = useState(INITIAL_PEOPLE);
-  const [bookingsByWeek, setBookingsByWeek] = useState({});
-  const [fixedEvents, setFixedEvents] = useState(INITIAL_FIXED_EVENTS);
-  const [selectedPerson, setSelectedPerson] = useState(INITIAL_PEOPLE[0].name);
-  const [newPersonName, setNewPersonName] = useState("");
-  const [pendingDelete, setPendingDelete] = useState(null);
-  const [weekOffset, setWeekOffset] = useState(0);
-  const [adminPassword, setAdminPassword] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [adminError, setAdminError] = useState("");
-  const [fixedForm, setFixedForm] = useState({
+function ZoomBusyCalendar() {
+  const [people, setPeople] = React.useState(INITIAL_PEOPLE);
+  const [bookingsByWeek, setBookingsByWeek] = React.useState({});
+  const [fixedEvents, setFixedEvents] = React.useState(INITIAL_FIXED_EVENTS);
+  const [selectedPerson, setSelectedPerson] = React.useState(INITIAL_PEOPLE[0].name);
+  const [newPersonName, setNewPersonName] = React.useState("");
+  const [pendingDelete, setPendingDelete] = React.useState(null);
+  const [weekOffset, setWeekOffset] = React.useState(0);
+  const [adminPassword, setAdminPassword] = React.useState("");
+  const [isAdmin, setIsAdmin] = React.useState(false);
+  const [adminError, setAdminError] = React.useState("");
+  const [fixedForm, setFixedForm] = React.useState({
     dayIndex: "0",
     start: "08:00",
     end: "09:00",
     title: "",
   });
 
-  const personByName = useMemo(
+  const personByName = React.useMemo(
     () => Object.fromEntries(people.map((person) => [person.name, person])),
     [people]
   );
 
-  const weekStart = useMemo(() => addDays(startOfCurrentWeekMonday(), weekOffset * 7), [weekOffset]);
+  const weekStart = React.useMemo(() => addDays(startOfCurrentWeekMonday(), weekOffset * 7), [weekOffset]);
   const weekKey = formatDateKey(weekStart);
   const bookings = bookingsByWeek[weekKey] ?? {};
 
-  const days = useMemo(
+  const days = React.useMemo(
     () => Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)),
     [weekStart]
   );
 
-  const slots = useMemo(
+  const slots = React.useMemo(
     () => Array.from({ length: 19 }, (_, i) => 8 * 60 + i * 30),
     []
   );
@@ -515,3 +527,8 @@ export default function ZoomBusyCalendar() {
     </main>
   );
 }
+
+ReactDOM.createRoot(document.getElementById("root")).render(<ZoomBusyCalendar />);
+  </script>
+</body>
+</html>
