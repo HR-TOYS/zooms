@@ -1,534 +1,99 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Календарь занятости Zoom</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Календарь занятости Zoom</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:24px;font-family:Arial,sans-serif;background:#f8fafc;color:#0f172a}.app{max-width:1400px;margin:auto}.section{background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(15,23,42,.06);margin-bottom:20px}.top{padding:22px;display:flex;justify-content:space-between;gap:20px;align-items:center}.label,.hint{color:#64748b;font-size:14px}.label{font-weight:700}h1{margin:6px 0 0;font-size:26px;letter-spacing:-.03em}.controls,.people,.add{display:flex;gap:8px;flex-wrap:wrap}.btn,.addbtn{border:1px solid #e2e8f0;background:#fff;color:#0f172a;border-radius:16px;padding:10px 14px;font-size:14px;font-weight:800;cursor:pointer}.btn:hover{background:#f8fafc}.peoplebox,.adminbox{padding:20px}.title{margin-bottom:12px;color:#475569;font-size:14px;font-weight:800}.subtle{font-size:12px;color:#64748b;margin-top:4px}.pwrap{display:inline-flex}.pbtn,.xbtn{border:1px solid currentColor;font-weight:800;cursor:pointer}.pbtn{border-radius:999px 0 0 999px;padding:9px 13px;font-size:14px;opacity:.82}.xbtn{border-left:0;border-radius:0 999px 999px 0;padding:9px 10px;font-size:15px;opacity:.72}.pbtn.selected{opacity:1;outline:3px solid #334155;box-shadow:0 8px 18px rgba(15,23,42,.16);transform:scale(1.04);z-index:1}.add{margin-top:16px}.inp,.select,.timeinp{min-width:180px;border:1px solid #e2e8f0;border-radius:16px;padding:10px 14px;font-size:14px;outline:0;background:white}.inp:focus,.select:focus,.timeinp:focus{border-color:#94a3b8;box-shadow:0 0 0 3px #f1f5f9}.addbtn{background:#0f172a;color:white;border-color:#0f172a}.cal{overflow:hidden}.calhead{padding:16px 20px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;gap:16px;align-items:center;font-weight:800}.pill{border-radius:999px;padding:6px 10px;border:1px solid currentColor;font-size:13px;font-weight:800;display:inline-flex;margin-left:6px}.tw{overflow:auto}table{border-collapse:collapse;width:100%;min-width:1180px;font-size:13px}th,td{border:1px solid #e2e8f0;padding:6px;text-align:center;vertical-align:middle}th{background:#f8fafc;color:#475569;height:42px;font-size:12px;font-weight:800}.date{position:sticky;left:0;z-index:2;background:white;min-width:145px;text-align:left;font-weight:800}thead .date{background:#f8fafc;z-index:4}.small{margin-top:4px;font-size:11px;color:#94a3b8;font-weight:400}.slot,.book,.fixed{min-height:50px;width:100%;border-radius:16px;border:1px solid currentColor;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;text-align:center;padding:7px}.slot{background:white;color:#cbd5e1;cursor:pointer}.slot:hover{background:#f8fafc;color:#64748b;transform:scale(1.02)}.book{cursor:pointer;box-shadow:0 4px 12px rgba(15,23,42,.08)}.book:hover{transform:scale(1.015)}.fixed{cursor:not-allowed;box-shadow:0 4px 12px rgba(15,23,42,.08)}.back{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(15,23,42,.45);backdrop-filter:blur(4px);z-index:50}.modal{width:100%;max-width:430px;background:white;border-radius:26px;padding:24px;box-shadow:0 24px 70px rgba(15,23,42,.28)}.shield{width:48px;height:48px;border-radius:18px;background:#ffe4e6;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:14px}.modal h2{margin:0;font-size:22px}.modal p{color:#64748b;line-height:1.5;font-size:14px;margin:8px 0 0}.details{background:#f8fafc;border-radius:18px;padding:14px;margin-top:16px;font-size:14px}.row{display:flex;justify-content:space-between;gap:12px;padding:7px 0}.muted{color:#64748b}.actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}.cancel,.del{border:0;border-radius:16px;padding:11px 16px;font-weight:800;cursor:pointer}.cancel{background:white;border:1px solid #e2e8f0;color:#334155}.del{background:#e11d48;color:white}.admin-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}.admin-grid{display:grid;grid-template-columns:1fr 1fr 1fr 2fr auto;gap:8px}.fixed-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.fixed-chip{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:9px 12px;font-size:12px;font-weight:800;border:1px solid currentColor}.chip-x{border:0;background:transparent;color:inherit;font-weight:900;cursor:pointer;opacity:.7;font-size:15px}.chip-x:hover{opacity:1}.error{margin-top:12px;color:#e11d48;font-size:14px;font-weight:800}.p-rose{background:#fecdd3;color:#881337}.p-orange{background:#fed7aa;color:#7c2d12}.p-amber{background:#fde68a;color:#78350f}.p-yellow{background:#fef08a;color:#713f12}.p-lime{background:#d9f99d;color:#365314}.p-emerald{background:#a7f3d0;color:#064e3b}.p-teal{background:#99f6e4;color:#134e4a}.p-cyan{background:#a5f3fc;color:#164e63}.p-sky{background:#bae6fd;color:#0c4a6e}.p-blue{background:#bfdbfe;color:#1e3a8a}.p-violet{background:#ddd6fe;color:#4c1d95}.p-fuchsia{background:#f5d0fe;color:#701a75}.p-pink{background:#fbcfe8;color:#831843}.p-purple{background:#e9d5ff;color:#581c87}.p-indigo{background:#c7d2fe;color:#312e81}.f-indigo{background:#e0e7ff;color:#312e81}.f-emerald{background:#d1fae5;color:#064e3b}.f-sky{background:#e0f2fe;color:#075985}.f-pink{background:#fce7f3;color:#831843}.f-amber{background:#fef3c7;color:#78350f}.f-violet{background:#ede9fe;color:#4c1d95}@media(max-width:900px){.admin-grid{grid-template-columns:1fr}.inp,.select,.timeinp,.addbtn{width:100%;min-width:0}}@media(max-width:760px){body{padding:14px}.top,.admin-top{flex-direction:column;align-items:flex-start}h1{font-size:22px}}
+</style>
 </head>
 <body>
-  <div id="root"></div>
-  <script type="text/babel">
-const ADMIN_PASSWORD = "zoom2026";
-
-function startOfCurrentWeekMonday(date = new Date()) {
-  const d = new Date(date);
-  const day = d.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
-  d.setDate(d.getDate() + diff);
-  d.setHours(0, 0, 0, 0);
-  return d;
-}
-
-function addDays(date, days) {
-  const d = new Date(date);
-  d.setDate(d.getDate() + days);
-  return d;
-}
-
-function formatDateKey(date) {
-  return date.toISOString().slice(0, 10);
-}
-
-function formatDayLabel(date) {
-  return new Intl.DateTimeFormat("ru-RU", {
-    weekday: "short",
-    day: "2-digit",
-    month: "2-digit",
-  }).format(date);
-}
-
-function formatSlot(minutesFromMidnight) {
-  const h = Math.floor(minutesFromMidnight / 60);
-  const m = minutesFromMidnight % 60;
-  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
-}
-
-const COLOR_CLASSES = [
-  "bg-rose-200 text-rose-950 ring-rose-300",
-  "bg-orange-200 text-orange-950 ring-orange-300",
-  "bg-amber-200 text-amber-950 ring-amber-300",
-  "bg-yellow-200 text-yellow-950 ring-yellow-300",
-  "bg-lime-200 text-lime-950 ring-lime-300",
-  "bg-emerald-200 text-emerald-950 ring-emerald-300",
-  "bg-teal-200 text-teal-950 ring-teal-300",
-  "bg-cyan-200 text-cyan-950 ring-cyan-300",
-  "bg-sky-200 text-sky-950 ring-sky-300",
-  "bg-blue-200 text-blue-950 ring-blue-300",
-  "bg-violet-200 text-violet-950 ring-violet-300",
-  "bg-fuchsia-200 text-fuchsia-950 ring-fuchsia-300",
-  "bg-pink-200 text-pink-950 ring-pink-300",
-  "bg-purple-200 text-purple-950 ring-purple-300",
-  "bg-indigo-200 text-indigo-950 ring-indigo-300",
-];
-
-const FIXED_COLOR_CLASSES = [
-  "bg-indigo-100 text-indigo-950 ring-indigo-200",
-  "bg-emerald-100 text-emerald-950 ring-emerald-200",
-  "bg-sky-100 text-sky-950 ring-sky-200",
-  "bg-pink-100 text-pink-950 ring-pink-200",
-  "bg-amber-100 text-amber-950 ring-amber-200",
-  "bg-violet-100 text-violet-950 ring-violet-200",
-];
-
-const INITIAL_PEOPLE = [
-  "Оля В",
-  "Оля А",
-  "Вероника",
-  "Саша",
-  "Даша",
-  "Настя",
-  "Аня",
-  "Маша Б",
-  "Маша С",
-  "Катя",
-  "Наташа С",
-  "Наталья",
-].map((name, index) => ({
-  name,
-  className: COLOR_CLASSES[index % COLOR_CLASSES.length],
-}));
-
-const INITIAL_FIXED_EVENTS = {
-  0: [
-    { start: "08:30", end: "09:30", title: "Планёрка найм АТП", className: FIXED_COLOR_CLASSES[0] },
-  ],
-  1: [
-    { start: "08:30", end: "09:30", title: "Планёрка адаптация", className: FIXED_COLOR_CLASSES[1] },
-    { start: "09:30", end: "10:30", title: "Планёрка найм офис", className: FIXED_COLOR_CLASSES[2] },
-  ],
-  2: [
-    { start: "08:30", end: "09:30", title: "Планёрка найм АТП", className: FIXED_COLOR_CLASSES[0] },
-  ],
-  3: [
-    { start: "08:30", end: "09:30", title: "Планёрка найм офис", className: FIXED_COLOR_CLASSES[2] },
-  ],
-  4: [
-    { start: "14:00", end: "15:00", title: "WELCOME", className: FIXED_COLOR_CLASSES[3] },
-  ],
-};
-
-const WEEKDAYS = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"];
-
-function timeToMinutes(time) {
-  const [hours, minutes] = time.split(":").map(Number);
-  return hours * 60 + minutes;
-}
-
-function getFixedEvent(fixedEvents, dayIndex, time) {
-  return (fixedEvents[dayIndex] ?? []).find((event) => event.start === time) ?? null;
-}
-
-function isInsideFixedEvent(fixedEvents, dayIndex, time) {
-  const minutes = timeToMinutes(time);
-  return (fixedEvents[dayIndex] ?? []).some((event) => {
-    const start = timeToMinutes(event.start);
-    const end = timeToMinutes(event.end);
-    return minutes > start && minutes < end;
-  });
-}
-
-function getFixedEventByTime(fixedEvents, dayIndex, time) {
-  const minutes = timeToMinutes(time);
-  return (fixedEvents[dayIndex] ?? []).find((event) => {
-    const start = timeToMinutes(event.start);
-    const end = timeToMinutes(event.end);
-    return minutes >= start && minutes < end;
-  }) ?? null;
-}
-
-function getFixedEventColSpan(event) {
-  return (timeToMinutes(event.end) - timeToMinutes(event.start)) / 30;
-}
-
-function getBookingSpan(dayBookings, slots, startIndex) {
-  const startTime = formatSlot(slots[startIndex]);
-  const bookedBy = dayBookings[startTime];
-  let span = 1;
-
-  for (let i = startIndex + 1; i < slots.length; i += 1) {
-    const nextTime = formatSlot(slots[i]);
-    if (dayBookings[nextTime] !== bookedBy) break;
-    span += 1;
-  }
-
-  return span;
-}
-
-function isHiddenPartOfBooking(dayBookings, slots, slotIndex) {
-  const time = formatSlot(slots[slotIndex]);
-  const bookedBy = dayBookings[time];
-  if (!bookedBy || slotIndex === 0) return false;
-  const previousTime = formatSlot(slots[slotIndex - 1]);
-  return dayBookings[previousTime] === bookedBy;
-}
-
-function hasFixedOverlap(fixedEvents, dayIndex, start, end) {
-  const startMinutes = timeToMinutes(start);
-  const endMinutes = timeToMinutes(end);
-
-  return (fixedEvents[dayIndex] ?? []).some((event) => {
-    const eventStart = timeToMinutes(event.start);
-    const eventEnd = timeToMinutes(event.end);
-    return startMinutes < eventEnd && endMinutes > eventStart;
-  });
-}
-
-function ZoomBusyCalendar() {
-  const [people, setPeople] = React.useState(INITIAL_PEOPLE);
-  const [bookingsByWeek, setBookingsByWeek] = React.useState({});
-  const [fixedEvents, setFixedEvents] = React.useState(INITIAL_FIXED_EVENTS);
-  const [selectedPerson, setSelectedPerson] = React.useState(INITIAL_PEOPLE[0].name);
-  const [newPersonName, setNewPersonName] = React.useState("");
-  const [pendingDelete, setPendingDelete] = React.useState(null);
-  const [weekOffset, setWeekOffset] = React.useState(0);
-  const [adminPassword, setAdminPassword] = React.useState("");
-  const [isAdmin, setIsAdmin] = React.useState(false);
-  const [adminError, setAdminError] = React.useState("");
-  const [fixedForm, setFixedForm] = React.useState({
-    dayIndex: "0",
-    start: "08:00",
-    end: "09:00",
-    title: "",
-  });
-
-  const personByName = React.useMemo(
-    () => Object.fromEntries(people.map((person) => [person.name, person])),
-    [people]
-  );
-
-  const weekStart = React.useMemo(() => addDays(startOfCurrentWeekMonday(), weekOffset * 7), [weekOffset]);
-  const weekKey = formatDateKey(weekStart);
-  const bookings = bookingsByWeek[weekKey] ?? {};
-
-  const days = React.useMemo(
-    () => Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)),
-    [weekStart]
-  );
-
-  const slots = React.useMemo(
-    () => Array.from({ length: 19 }, (_, i) => 8 * 60 + i * 30),
-    []
-  );
-
-  const addPerson = () => {
-    const name = newPersonName.trim();
-    if (!name) return;
-
-    if (people.some((person) => person.name.toLowerCase() === name.toLowerCase())) {
-      setNewPersonName("");
-      return;
-    }
-
-    const nextPerson = {
-      name,
-      className: COLOR_CLASSES[people.length % COLOR_CLASSES.length],
-    };
-
-    setPeople((prev) => [...prev, nextPerson]);
-    setSelectedPerson(name);
-    setNewPersonName("");
-  };
-
-  const deletePerson = (personName) => {
-    if (people.length === 1) return;
-
-    const confirmed = window.confirm(`Удалить пользователя «${personName}»?`);
-    if (!confirmed) return;
-
-    setPeople((prev) => prev.filter((person) => person.name !== personName));
-
-    if (selectedPerson === personName) {
-      const nextPerson = people.find((person) => person.name !== personName);
-      if (nextPerson) setSelectedPerson(nextPerson.name);
-    }
-  };
-
-  const loginAdmin = () => {
-    if (adminPassword === ADMIN_PASSWORD) {
-      setIsAdmin(true);
-      setAdminPassword("");
-      setAdminError("");
-    } else {
-      setAdminError("Неверный пароль");
-    }
-  };
-
-  const addFixedEvent = () => {
-    const dayIndex = Number(fixedForm.dayIndex);
-    const title = fixedForm.title.trim();
-    const start = fixedForm.start;
-    const end = fixedForm.end;
-
-    if (!title) {
-      setAdminError("Добавь название интервала");
-      return;
-    }
-
-    if (timeToMinutes(end) <= timeToMinutes(start)) {
-      setAdminError("Время окончания должно быть позже начала");
-      return;
-    }
-
-    if (hasFixedOverlap(fixedEvents, dayIndex, start, end)) {
-      setAdminError("Этот закреплённый интервал пересекается с другим");
-      return;
-    }
-
-    const nextEvent = {
-      start,
-      end,
-      title,
-      className: FIXED_COLOR_CLASSES[(fixedEvents[dayIndex] ?? []).length % FIXED_COLOR_CLASSES.length],
-    };
-
-    setFixedEvents((prev) => ({
-      ...prev,
-      [dayIndex]: [...(prev[dayIndex] ?? []), nextEvent].sort((a, b) => timeToMinutes(a.start) - timeToMinutes(b.start)),
+<div class="app">
+<section class="section top"><div><div class="label">Календарь занятости Zoom</div><h1 id="weekTitle">Неделя</h1><div class="hint">Время указано по МСК</div></div><div class="controls"><button class="btn" id="prevWeek">←</button><button class="btn" id="currentWeek">Текущая неделя</button><button class="btn" id="nextWeek">→</button></div></section>
+<section class="section peoplebox"><div class="title">Кто бронирует слот</div><div id="peopleHint" class="subtle"></div><div id="peopleList" class="people"></div><div id="personEdit" class="add"><input id="newPersonInput" class="inp" placeholder="Новое имя"><button id="addPersonBtn" class="addbtn">Добавить пользователя</button></div></section>
+<section class="section adminbox"><div class="admin-top"><div><div class="title" style="margin-bottom:0">Закреплённые интервалы</div><div class="subtle">Редактирование доступно только администратору</div></div><button class="btn" id="logoutAdmin" style="display:none">Выйти</button></div><div id="adminLogin" class="add"><input id="adminPassword" class="inp" type="password" placeholder="Пароль для редактирования"><button id="loginAdmin" class="addbtn">Открыть редактирование</button></div><div id="adminPanel" style="display:none"><div class="admin-grid"><select id="fixedDay" class="select"></select><input id="fixedStart" class="timeinp" type="time" step="1800" value="08:00"><input id="fixedEnd" class="timeinp" type="time" step="1800" value="09:00"><input id="fixedTitle" class="inp" placeholder="Название интервала"><button id="addFixed" class="addbtn">Добавить</button></div><div id="fixedList" class="fixed-list"></div></div><div id="adminError" class="error"></div></section>
+<section class="section cal"><div class="calhead"><div>📅 <span id="calendarWeekLabel">Неделя</span></div><div>Выбрано: <span id="selectedBadge" class="pill"></span></div></div><div class="tw"><table id="calendarTable"></table></div></section>
+</div>
+<div id="modalBackdrop" class="back"><div class="modal"><div class="shield">🛡️</div><h2>Удалить бронь?</h2><p>Этот слот уже занят. Подтверди удаление, чтобы случайно не угнать чужое время.</p><div class="details"><div class="row"><span class="muted">Кто</span><strong id="modalPerson"></strong></div><div class="row"><span class="muted">Дата</span><strong id="modalDate"></strong></div><div class="row"><span class="muted">Время</span><strong id="modalTime"></strong></div></div><div class="actions"><button class="cancel" id="cancelDelete">Оставить</button><button class="del" id="confirmDelete">Удалить бронь</button></div></div></div>
+<script>
+const ADMIN_PASSWORD="zoom2026";
+const COLORS=["p-rose","p-orange","p-amber","p-yellow","p-lime","p-emerald","p-teal","p-cyan","p-sky","p-blue","p-violet","p-fuchsia","p-pink","p-purple","p-indigo"];
+const FIXED_COLORS=["f-indigo","f-emerald","f-sky","f-pink","f-amber","f-violet"];
+const WEEKDAYS=["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"];
+let people=["Оля В","Оля А","Вероника","Саша","Даша","Настя","Аня","Маша Б","Маша С","Катя","Наташа С","Наталья"].map((name,i)=>({name,cls:COLORS[i%COLORS.length]}));
+let fixedEvents={0:[{start:"08:30",end:"09:30",title:"Планёрка найм АТП",cls:FIXED_COLORS[0]}],1:[{start:"08:30",end:"09:30",title:"Планёрка адаптация",cls:FIXED_COLORS[1]},{start:"09:30",end:"10:30",title:"Планёрка найм офис",cls:FIXED_COLORS[2]}],2:[{start:"08:30",end:"09:30",title:"Планёрка найм АТП",cls:FIXED_COLORS[0]}],3:[{start:"08:30",end:"09:30",title:"Планёрка найм офис",cls:FIXED_COLORS[2]}],4:[{start:"14:00",end:"15:00",title:"WELCOME",cls:FIXED_COLORS[3]}]};
+let bookingsByWeek={},selectedPerson=people[0].name,pendingDelete=null,weekOffset=0,isAdmin=false;
+const slots=Array.from({length:19},(_,i)=>480+i*30);
+const STORAGE_KEY="zoom_busy_calendar_state_v1";
+function saveState(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify({
+      people:people,
+      fixedEvents:fixedEvents,
+      bookingsByWeek:bookingsByWeek,
+      selectedPerson:selectedPerson
     }));
-
-    setFixedForm((prev) => ({ ...prev, title: "" }));
-    setAdminError("");
-  };
-
-  const deleteFixedEvent = (dayIndex, eventIndex) => {
-    setFixedEvents((prev) => ({
-      ...prev,
-      [dayIndex]: (prev[dayIndex] ?? []).filter((_, index) => index !== eventIndex),
-    }));
-  };
-
-  const toggleBooking = (dayIndex, slot) => {
-    const time = formatSlot(slot);
-
-    if (getFixedEventByTime(fixedEvents, dayIndex, time)) return;
-    if (!personByName[selectedPerson]) return;
-
-    const dayBookings = bookings[dayIndex] ?? {};
-    const bookedBy = dayBookings[time];
-
-    if (bookedBy) {
-      setPendingDelete({ dayIndex, time, bookedBy });
-      return;
-    }
-
-    setBookingsByWeek((prev) => ({
-      ...prev,
-      [weekKey]: {
-        ...(prev[weekKey] ?? {}),
-        [dayIndex]: {
-          ...((prev[weekKey] ?? {})[dayIndex] ?? {}),
-          [time]: selectedPerson,
-        },
-      },
-    }));
-  };
-
-  const confirmDelete = () => {
-    if (!pendingDelete) return;
-
-    setBookingsByWeek((prev) => {
-      const weekBookings = { ...(prev[weekKey] ?? {}) };
-      const dayBookings = { ...(weekBookings[pendingDelete.dayIndex] ?? {}) };
-      delete dayBookings[pendingDelete.time];
-
-      return {
-        ...prev,
-        [weekKey]: {
-          ...weekBookings,
-          [pendingDelete.dayIndex]: dayBookings,
-        },
-      };
-    });
-
-    setPendingDelete(null);
-  };
-
-  return (
-    <main className="min-h-screen bg-slate-50 p-6 text-slate-900">
-      <div className="mx-auto max-w-7xl space-y-5">
-        <section className="rounded-3xl bg-white p-5 shadow-sm">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <div className="text-sm font-medium text-slate-500">Календарь занятости Zoom</div>
-              <h1 className="mt-1 text-2xl font-semibold tracking-tight">Неделя: {formatDayLabel(weekStart)} — {formatDayLabel(addDays(weekStart, 6))}</h1>
-              <div className="mt-1 text-sm text-slate-500">Время указано по МСК</div>
-            </div>
-            <div className="flex items-center gap-2">
-              <button onClick={() => setWeekOffset((value) => value - 1)} className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold transition hover:bg-slate-50">←</button>
-              <button onClick={() => setWeekOffset(0)} className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold transition hover:bg-slate-50">Текущая неделя</button>
-              <button onClick={() => setWeekOffset((value) => value + 1)} className="rounded-2xl border border-slate-200 px-4 py-2 text-sm font-semibold transition hover:bg-slate-50">→</button>
-            </div>
-          </div>
-        </section>
-
-        <section className="rounded-3xl bg-white p-5 shadow-sm">
-          <div className="mb-3 flex items-center justify-between gap-3">
-            <div className="text-sm font-medium text-slate-600">Кто бронирует слот</div>
-            {!isAdmin && (
-              <div className="text-xs font-medium text-slate-400">
-                Редактирование списка доступно только администратору
-              </div>
-            )}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {people.map((person) => {
-              const isSelected = selectedPerson === person.name;
-              return (
-                <span key={person.name} className="inline-flex items-center">
-                  <button onClick={() => setSelectedPerson(person.name)} className={`rounded-l-full px-3 py-2 text-sm font-medium ring-1 transition ${person.className} ${isSelected ? "scale-105 shadow-md outline outline-2 outline-slate-700" : "opacity-80"}`}>
-                    {person.name}
-                  </button>
-                  {isAdmin && (
-                    <button onClick={() => deletePerson(person.name)} disabled={people.length === 1} className={`rounded-r-full px-2 py-2 text-sm font-bold ring-1 transition ${person.className} ${people.length === 1 ? "cursor-not-allowed opacity-40" : "opacity-80 hover:opacity-100"}`} title={`Удалить ${person.name}`}>
-                  
-                    ×
-                    </button>
-                  )}
-                </span>
-              );
-            })}
-          </div>
-
-          {isAdmin && (
-            <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-              <input value={newPersonName} onChange={(event) => setNewPersonName(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") addPerson(); }} placeholder="Новое имя" className="min-w-0 rounded-2xl border border-slate-200 px-4 py-2 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-100" />
-              <button onClick={addPerson} className="rounded-2xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700">Добавить пользователя</button>
-            </div>
-          )}
-        </section>
-
-        <section className="rounded-3xl bg-white p-5 shadow-sm">
-          <div className="mb-3 flex items-center justify-between gap-3">
-            <div>
-              <div className="text-sm font-semibold text-slate-700">Закреплённые интервалы</div>
-              <div className="text-xs text-slate-500">Редактирование доступно только администратору</div>
-            </div>
-            {isAdmin && <button onClick={() => setIsAdmin(false)} className="rounded-2xl border border-slate-200 px-3 py-2 text-xs font-semibold hover:bg-slate-50">Выйти</button>}
-          </div>
-
-          {!isAdmin ? (
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <input type="password" value={adminPassword} onChange={(event) => setAdminPassword(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") loginAdmin(); }} placeholder="Пароль для редактирования" className="min-w-0 rounded-2xl border border-slate-200 px-4 py-2 text-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-100" />
-              <button onClick={loginAdmin} className="rounded-2xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700">Открыть редактирование</button>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <div className="grid gap-2 md:grid-cols-[1fr_1fr_1fr_2fr_auto]">
-                <select value={fixedForm.dayIndex} onChange={(event) => setFixedForm((prev) => ({ ...prev, dayIndex: event.target.value }))} className="rounded-2xl border border-slate-200 px-4 py-2 text-sm outline-none">
-                  {WEEKDAYS.map((day, index) => <option key={day} value={index}>{day}</option>)}
-                </select>
-                <input type="time" step="1800" value={fixedForm.start} onChange={(event) => setFixedForm((prev) => ({ ...prev, start: event.target.value }))} className="rounded-2xl border border-slate-200 px-4 py-2 text-sm outline-none" />
-                <input type="time" step="1800" value={fixedForm.end} onChange={(event) => setFixedForm((prev) => ({ ...prev, end: event.target.value }))} className="rounded-2xl border border-slate-200 px-4 py-2 text-sm outline-none" />
-                <input value={fixedForm.title} onChange={(event) => setFixedForm((prev) => ({ ...prev, title: event.target.value }))} placeholder="Название интервала" className="rounded-2xl border border-slate-200 px-4 py-2 text-sm outline-none" />
-                <button onClick={addFixedEvent} className="rounded-2xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700">Добавить</button>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {Object.entries(fixedEvents).flatMap(([dayIndex, events]) =>
-                  events.map((event, eventIndex) => (
-                    <span key={`${dayIndex}-${event.start}-${event.title}`} className={`inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold ring-1 ${event.className}`}>
-                      {WEEKDAYS[Number(dayIndex)]}: {event.start}–{event.end} · {event.title}
-                      <button onClick={() => deleteFixedEvent(Number(dayIndex), eventIndex)} className="font-black opacity-70 hover:opacity-100">×</button>
-                    </span>
-                  ))
-                )}
-              </div>
-            </div>
-          )}
-
-          {adminError && <div className="mt-3 text-sm font-medium text-rose-600">{adminError}</div>}
-        </section>
-
-        <div className="overflow-auto bg-white rounded-3xl shadow-sm">
-          <table className="w-full border-collapse text-sm">
-            <thead>
-              <tr>
-                <th className="w-36 border p-2">Дата (МСК)</th>
-                {slots.map((slot) => <th key={slot} className="border p-2 text-xs">{formatSlot(slot)}</th>)}
-              </tr>
-            </thead>
-            <tbody>
-              {days.map((day, dayIndex) => (
-                <tr key={dayIndex}>
-                  <td className="border p-2">{formatDayLabel(day)}</td>
-                  {slots.map((slot, slotIndex) => {
-                    const time = formatSlot(slot);
-                    const fixed = getFixedEvent(fixedEvents, dayIndex, time);
-                    const isHiddenPartOfFixed = isInsideFixedEvent(fixedEvents, dayIndex, time);
-                    const dayBookings = bookings[dayIndex] ?? {};
-                    const booked = dayBookings[time];
-                    const isHiddenBooking = isHiddenPartOfBooking(dayBookings, slots, slotIndex);
-                    const bookedPerson = booked ? personByName[booked] : null;
-
-                    if (isHiddenPartOfFixed || isHiddenBooking) return null;
-
-                    if (fixed) {
-                      return (
-                        <td key={time} colSpan={getFixedEventColSpan(fixed)} className="border p-1">
-                          <div className={`flex h-12 w-full cursor-not-allowed items-center justify-center rounded-2xl px-3 text-center text-xs font-semibold ring-1 shadow-sm ${fixed.className}`} title={`${fixed.title}: ${fixed.start}–${fixed.end}`}>
-                            {fixed.title}
-                          </div>
-                        </td>
-                      );
-                    }
-
-                    if (booked && bookedPerson) {
-                      const bookingSpan = getBookingSpan(dayBookings, slots, slotIndex);
-                      const startTime = time;
-                      const endTime = formatSlot(slot + bookingSpan * 30);
-
-                      return (
-                        <td key={time} colSpan={bookingSpan} className="border p-1">
-                          <button
-                            onClick={(event) => {
-                              const rect = event.currentTarget.getBoundingClientRect();
-                              const relativeX = event.clientX - rect.left;
-                              const clickedPart = Math.min(bookingSpan - 1, Math.max(0, Math.floor((relativeX / rect.width) * bookingSpan)));
-                              toggleBooking(dayIndex, slot + clickedPart * 30);
-                            }}
-                            className={`flex h-12 w-full items-center justify-center rounded-2xl px-3 text-center text-xs font-semibold ring-1 shadow-sm transition hover:scale-[1.02] ${bookedPerson.className}`}
-                            title={`${formatDayLabel(day)} ${startTime}–${endTime} — ${booked}`}
-                          >
-                            {booked}
-                          </button>
-                        </td>
-                      );
-                    }
-
-                    return (
-                      <td key={time} className="border p-1">
-                        <button onClick={() => toggleBooking(dayIndex, slot)} className="h-12 w-full rounded-xl bg-white text-xs font-semibold text-slate-300 ring-1 ring-slate-100 transition hover:scale-[1.02] hover:bg-slate-50 hover:text-slate-500">+</button>
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {pendingDelete && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/40 p-4">
-          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
-            <div className="text-lg font-semibold">Удалить бронь?</div>
-            <div className="mt-2 text-sm text-slate-500">{pendingDelete.bookedBy}, {formatDayLabel(days[pendingDelete.dayIndex])}, {pendingDelete.time}</div>
-            <div className="mt-4 flex justify-end gap-2">
-              <button onClick={() => setPendingDelete(null)} className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium hover:bg-slate-50">Отмена</button>
-              <button onClick={confirmDelete} className="rounded-xl bg-rose-600 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-700">Удалить</button>
-            </div>
-          </div>
-        </div>
-      )}
-    </main>
-  );
+  }catch(e){}
 }
-
-ReactDOM.createRoot(document.getElementById("root")).render(<ZoomBusyCalendar />);
-  </script>
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw)return;
+    const data=JSON.parse(raw);
+    if(Array.isArray(data.people)&&data.people.length)people=data.people;
+    if(data.fixedEvents&&typeof data.fixedEvents==="object")fixedEvents=data.fixedEvents;
+    if(data.bookingsByWeek&&typeof data.bookingsByWeek==="object")bookingsByWeek=data.bookingsByWeek;
+    if(data.selectedPerson&&people.some(p=>p.name===data.selectedPerson))selectedPerson=data.selectedPerson;
+  }catch(e){}
+}
+function monday(date=new Date()){const d=new Date(date),day=d.getDay(),diff=day===0?-6:1-day;d.setDate(d.getDate()+diff);d.setHours(0,0,0,0);return d}
+function addDays(date,days){const d=new Date(date);d.setDate(d.getDate()+days);return d}
+function dateKey(d){return d.toISOString().slice(0,10)}
+function dayLabel(d){return new Intl.DateTimeFormat("ru-RU",{weekday:"short",day:"2-digit",month:"2-digit"}).format(d)}
+function slotLabel(m){return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0")}
+function toMin(t){const p=t.split(":").map(Number);return p[0]*60+p[1]}
+function weekStart(){return addDays(monday(),weekOffset*7)}
+function weekKey(){return dateKey(weekStart())}
+function bookings(){return bookingsByWeek[weekKey()]||{}}
+function personMap(){return Object.fromEntries(people.map(p=>[p.name,p]))}
+function fixedStart(day,t){return (fixedEvents[day]||[]).find(e=>e.start===t)||null}
+function fixedInside(day,t){const m=toMin(t);return (fixedEvents[day]||[]).some(e=>m>toMin(e.start)&&m<toMin(e.end))}
+function fixedByTime(day,t){const m=toMin(t);return (fixedEvents[day]||[]).find(e=>m>=toMin(e.start)&&m<toMin(e.end))||null}
+function spanFixed(e){return (toMin(e.end)-toMin(e.start))/30}
+function spanBooking(dayBookings,startIndex){const t=slotLabel(slots[startIndex]),name=dayBookings[t];let span=1;for(let i=startIndex+1;i<slots.length;i++){if(dayBookings[slotLabel(slots[i])]!==name)break;span++}return span}
+function hiddenBooking(dayBookings,idx){const t=slotLabel(slots[idx]),name=dayBookings[t];if(!name||idx===0)return false;return dayBookings[slotLabel(slots[idx-1])]===name}
+function hasFixedOverlap(day,start,end){const sm=toMin(start),em=toMin(end);return (fixedEvents[day]||[]).some(e=>sm<toMin(e.end)&&em>toMin(e.start))}
+function addPerson(){const input=document.getElementById("newPersonInput"),name=input.value.trim();if(!name)return;if(people.some(p=>p.name.toLowerCase()===name.toLowerCase())){input.value="";return}people.push({name,cls:COLORS[people.length%COLORS.length]});selectedPerson=name;input.value="";saveState();render()}
+function deletePerson(name){if(people.length===1)return;if(!confirm("Удалить пользователя «"+name+"»?"))return;people=people.filter(p=>p.name!==name);if(selectedPerson===name)selectedPerson=people[0].name;saveState();render()}
+function loginAdmin(){const pass=document.getElementById("adminPassword").value;if(pass===ADMIN_PASSWORD){isAdmin=true;document.getElementById("adminPassword").value="";setAdminError("");render()}else setAdminError("Неверный пароль")}
+function logoutAdmin(){isAdmin=false;setAdminError("");render()}
+function setAdminError(msg){document.getElementById("adminError").textContent=msg||""}
+function addFixedEvent(){const day=Number(document.getElementById("fixedDay").value),start=document.getElementById("fixedStart").value,end=document.getElementById("fixedEnd").value,title=document.getElementById("fixedTitle").value.trim();if(!title){setAdminError("Добавь название интервала");return}if(toMin(end)<=toMin(start)){setAdminError("Время окончания должно быть позже начала");return}if(hasFixedOverlap(day,start,end)){setAdminError("Этот закреплённый интервал пересекается с другим");return}const event={start,end,title,cls:FIXED_COLORS[(fixedEvents[day]||[]).length%FIXED_COLORS.length]};fixedEvents[day]=[...(fixedEvents[day]||[]),event].sort((a,b)=>toMin(a.start)-toMin(b.start));document.getElementById("fixedTitle").value="";setAdminError("");saveState();render()}
+function deleteFixed(day,index){fixedEvents[day]=(fixedEvents[day]||[]).filter((_,i)=>i!==index);saveState();render()}
+function toggleBooking(day,slot){const t=slotLabel(slot);if(fixedByTime(day,t))return;if(!personMap()[selectedPerson])return;const wk=weekKey(),wb=bookingsByWeek[wk]||{},db=wb[day]||{},booked=db[t];if(booked){pendingDelete={dayIndex:day,time:t,bookedBy:booked};openModal();return}bookingsByWeek[wk]={...wb,[day]:{...db,[t]:selectedPerson}};saveState();render()}
+function openModal(){const d=addDays(weekStart(),pendingDelete.dayIndex);document.getElementById("modalPerson").textContent=pendingDelete.bookedBy;document.getElementById("modalDate").textContent=dayLabel(d);document.getElementById("modalTime").textContent=pendingDelete.time;document.getElementById("modalBackdrop").style.display="flex"}
+function closeModal(){pendingDelete=null;document.getElementById("modalBackdrop").style.display="none"}
+function confirmDelete(){if(!pendingDelete)return;const wk=weekKey(),wb=bookingsByWeek[wk]||{},db={...(wb[pendingDelete.dayIndex]||{})};delete db[pendingDelete.time];bookingsByWeek[wk]={...wb,[pendingDelete.dayIndex]:db};saveState();closeModal();render()}
+function slotFromMergedClick(event,startSlot,span){const rect=event.currentTarget.getBoundingClientRect();const x=event.clientX-rect.left;const part=Math.min(span-1,Math.max(0,Math.floor((x/rect.width)*span)));return startSlot+part*30}
+function renderPeople(){document.getElementById("personEdit").style.display=isAdmin?"flex":"none";document.getElementById("peopleHint").textContent=isAdmin?"":"Редактирование списка доступно только администратору";const box=document.getElementById("peopleList");box.innerHTML="";people.forEach(p=>{const w=document.createElement("span");w.className="pwrap";const b=document.createElement("button");b.className="pbtn "+p.cls+(selectedPerson===p.name?" selected":"");b.textContent=p.name;b.onclick=()=>{selectedPerson=p.name;render()};w.appendChild(b);if(isAdmin){const x=document.createElement("button");x.className="xbtn "+p.cls;x.textContent="×";x.title="Удалить "+p.name;x.disabled=people.length===1;x.onclick=()=>deletePerson(p.name);if(people.length===1){x.style.opacity=".35";x.style.cursor="not-allowed"}w.appendChild(x)}box.appendChild(w)});const sel=personMap()[selectedPerson]||people[0],badge=document.getElementById("selectedBadge");badge.textContent=sel.name;badge.className="pill "+sel.cls}
+function renderAdmin(){document.getElementById("adminLogin").style.display=isAdmin?"none":"flex";document.getElementById("adminPanel").style.display=isAdmin?"block":"none";document.getElementById("logoutAdmin").style.display=isAdmin?"inline-block":"none";const select=document.getElementById("fixedDay");if(!select.dataset.ready){WEEKDAYS.forEach((d,i)=>{const o=document.createElement("option");o.value=i;o.textContent=d;select.appendChild(o)});select.dataset.ready="1"}const list=document.getElementById("fixedList");list.innerHTML="";Object.entries(fixedEvents).forEach(([day,events])=>{events.forEach((e,i)=>{const chip=document.createElement("span");chip.className="fixed-chip "+e.cls;chip.appendChild(document.createTextNode(WEEKDAYS[Number(day)]+": "+e.start+"–"+e.end+" · "+e.title));const x=document.createElement("button");x.className="chip-x";x.textContent="×";x.onclick=()=>deleteFixed(Number(day),i);chip.appendChild(x);list.appendChild(chip)})})}
+function renderCalendar(){const ws=weekStart(),we=addDays(ws,6),days=Array.from({length:7},(_,i)=>addDays(ws,i)),book=bookings(),pm=personMap();document.getElementById("weekTitle").textContent="Неделя: "+dayLabel(ws)+" — "+dayLabel(we);document.getElementById("calendarWeekLabel").textContent="Неделя от "+dayLabel(ws);const table=document.getElementById("calendarTable");table.innerHTML="";const thead=document.createElement("thead"),hr=document.createElement("tr"),dh=document.createElement("th");dh.textContent="Дата (МСК)";dh.className="date";hr.appendChild(dh);slots.forEach(s=>{const th=document.createElement("th");th.textContent=slotLabel(s);hr.appendChild(th)});thead.appendChild(hr);table.appendChild(thead);const tbody=document.createElement("tbody");days.forEach((day,di)=>{const tr=document.createElement("tr"),dt=document.createElement("td");dt.className="date";dt.innerHTML="<div>"+dayLabel(day)+"</div><div class='small'>"+dateKey(day)+"</div>";tr.appendChild(dt);slots.forEach((slot,si)=>{const t=slotLabel(slot),fix=fixedStart(di,t),hiddenFix=fixedInside(di,t),db=book[di]||{},booked=db[t],hiddenBook=hiddenBooking(db,si);if(hiddenFix||hiddenBook)return;const td=document.createElement("td");if(fix){td.colSpan=spanFixed(fix);const div=document.createElement("div");div.className="fixed "+fix.cls;div.textContent=fix.title;div.title=fix.title+": "+fix.start+"–"+fix.end;td.appendChild(div);tr.appendChild(td);return}if(booked){const p=pm[booked]||{name:booked,cls:"p-indigo"},span=spanBooking(db,si),end=slotLabel(slot+span*30);td.colSpan=span;const btn=document.createElement("button");btn.className="book "+p.cls;btn.textContent=booked;btn.title=dayLabel(day)+" "+t+"–"+end+" — "+booked;btn.onclick=(event)=>toggleBooking(di,slotFromMergedClick(event,slot,span));td.appendChild(btn);tr.appendChild(td);return}const btn=document.createElement("button");btn.className="slot";btn.textContent="+";btn.onclick=()=>toggleBooking(di,slot);td.appendChild(btn);tr.appendChild(td)});tbody.appendChild(tr)});table.appendChild(tbody)}
+function render(){renderPeople();renderAdmin();renderCalendar()}
+document.getElementById("prevWeek").onclick=()=>{weekOffset--;render()};
+document.getElementById("currentWeek").onclick=()=>{weekOffset=0;render()};
+document.getElementById("nextWeek").onclick=()=>{weekOffset++;render()};
+document.getElementById("addPersonBtn").onclick=addPerson;
+document.getElementById("newPersonInput").addEventListener("keydown",e=>{if(e.key==="Enter")addPerson()});
+document.getElementById("loginAdmin").onclick=loginAdmin;
+document.getElementById("adminPassword").addEventListener("keydown",e=>{if(e.key==="Enter")loginAdmin()});
+document.getElementById("logoutAdmin").onclick=logoutAdmin;
+document.getElementById("addFixed").onclick=addFixedEvent;
+document.getElementById("cancelDelete").onclick=closeModal;
+document.getElementById("confirmDelete").onclick=confirmDelete;
+document.getElementById("modalBackdrop").onclick=e=>{if(e.target.id==="modalBackdrop")closeModal()};
+loadState();
+render();
+</script>
 </body>
 </html>
