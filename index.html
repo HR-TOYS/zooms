@@ -79,17 +79,59 @@ function stateToRows(){
 }
 function loadFromSheet(){
   setSyncStatus("загрузка...");
-  const callback="cb_"+Date.now();let done=false;
-  window[callback]=function(rows){done=true;if(!Array.isArray(rows)){setSyncStatus("ошибка формата таблицы");return;}rowsToState(rows);cloudLoaded=true;setSyncStatus("данные загружены");render();delete window[callback];const old=document.getElementById(callback);if(old)old.remove();};
-  const s=document.createElement("script");s.id=callback;s.src=APPS_SCRIPT_URL+"?callback="+callback+"&_="+Date.now();s.onerror=function(){setSyncStatus("ошибка загрузки таблицы")};document.body.appendChild(s);
-  setTimeout(()=>{if(!done)setSyncStatus("таблица не ответила")},10000);
+  const callback="cb_"+Date.now();
+
+  window[callback]=function(rows){
+    if(Array.isArray(rows)){
+      rowsToState(rows);
+      cloudLoaded=true;
+      setSyncStatus("данные загружены");
+      render();
+    } else {
+      cloudLoaded=true;
+      setSyncStatus("таблица пустая");
+    }
+
+    delete window[callback];
+    const old=document.getElementById(callback);
+    if(old)old.remove();
+  };
+
+  const s=document.createElement("script");
+  s.id=callback;
+  s.src=APPS_SCRIPT_URL+"?callback="+callback+"&_="+Date.now();
+  s.onerror=function(){
+    cloudLoaded=true;
+    setSyncStatus("не удалось загрузить, но сохранение разрешено");
+  };
+
+  document.body.appendChild(s);
 }
 function saveToSheet(){
-  if(!cloudLoaded){alert("Данные ещё не загрузились. Подожди пару секунд.");return;}
-  if(isSaving)return;isSaving=true;setSyncStatus("сохраняю...");
-  const form=document.createElement("form");form.method="POST";form.action=APPS_SCRIPT_URL;form.target="hiddenPostFrame";form.style.display="none";
-  const input=document.createElement("input");input.name="payload";input.value=JSON.stringify(stateToRows());form.appendChild(input);document.body.appendChild(form);form.submit();
-  setTimeout(()=>{form.remove();isSaving=false;setSyncStatus("сохранено")},900);
+  if(isSaving)return;
+  isSaving=true;
+  cloudLoaded=true;
+  setSyncStatus("сохраняю...");
+
+  const form=document.createElement("form");
+  form.method="POST";
+  form.action=APPS_SCRIPT_URL;
+  form.target="hiddenPostFrame";
+  form.style.display="none";
+
+  const input=document.createElement("input");
+  input.name="payload";
+  input.value=JSON.stringify(stateToRows());
+
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
+
+  setTimeout(()=>{
+    form.remove();
+    isSaving=false;
+    setSyncStatus("сохранено");
+  },900);
 }
 function fixedStart(day,t){return (fixedEvents[day]||[]).find(e=>e.start===t)||null}
 function fixedInside(day,t){const m=toMin(t);return (fixedEvents[day]||[]).some(e=>m>toMin(e.start)&&m<toMin(e.end))}
