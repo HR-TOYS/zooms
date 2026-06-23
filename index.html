@@ -108,9 +108,12 @@ function loadFromSheet(){
   document.body.appendChild(s);
 }
 function saveToSheet(){
+  if(!cloudLoaded){
+    alert("Таблица не загрузилась. Сохранять нельзя, иначе можно затереть данные.");
+    return;
+  }
   if(isSaving)return;
   isSaving=true;
-  cloudLoaded=true;
   setSyncStatus("сохраняю...");
 
   const form=document.createElement("form");
@@ -132,6 +135,7 @@ function saveToSheet(){
     isSaving=false;
     setSyncStatus("сохранено");
   },900);
+}
 }
 function fixedStart(day,t){return (fixedEvents[day]||[]).find(e=>e.start===t)||null}
 function fixedInside(day,t){const m=toMin(t);return (fixedEvents[day]||[]).some(e=>m>toMin(e.start)&&m<toMin(e.end))}
